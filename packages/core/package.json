@@ -1,0 +1,20 @@
+{
+  "name": "@deev/core",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^11.11.7",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "@deev/route-table": "^0.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

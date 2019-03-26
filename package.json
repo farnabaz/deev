@@ -1,0 +1,19 @@
+{
+  "name": "deev",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^11.11.7",
+    "lerna": "^3.13.1",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
+  }
+}

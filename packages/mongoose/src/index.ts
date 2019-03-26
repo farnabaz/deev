@@ -1,2 +1,2 @@
-export * from './MongooseService';
-export * from './model';
+export * from "./MongooseService";
+export * from "./model";

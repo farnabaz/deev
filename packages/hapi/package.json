@@ -6,7 +6,11 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
+    "consola": "^2.5.7",
     "hapi": "^18.1.0",
     "object-path": "^0.11.4"
   },

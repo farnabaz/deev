@@ -7,7 +7,7 @@ export function doc(config: any = {}): (decoratedClass: any) => any {
     const name: string = decoratedClass.name;
 
     // create Schema
-    const definition = findDefinition(name)
+    const definition = findDefinition(name);
 
     const schema = definition.createSchema(decoratedClass, options);
 
@@ -29,23 +29,23 @@ export function field(fieldDef: any): (target: any, fieldName: string) => void {
   };
 }
 
-export function pre(method: string): (target: any, fieldName: string) => void {
+export function pre(hook: string): (target: any, fieldName: string) => void {
   return function fieldDecorator(target: any, fieldName: string): void {
     const name: string = target.constructor.name;
 
     const definition = findDefinition(name);
 
-    definition.addPreHook(method, target[fieldName]);
+    definition.addPreHook(hook, target[fieldName]);
   };
 }
 
-export function post(method: string): (target: any, fieldName: string) => void {
+export function post(hook: string): (target: any, fieldName: string) => void {
   return function fieldDecorator(target: any, fieldName: string): void {
     const name: string = target.constructor.name;
 
     const definition = findDefinition(name);
 
-    definition.addPostHook(method, target[fieldName]);
+    definition.addPostHook(hook, target[fieldName]);
   };
 }
 

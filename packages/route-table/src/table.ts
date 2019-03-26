@@ -1,3 +1,4 @@
+// ts
 /**
  * The MIT License (MIT)
  *
@@ -24,16 +25,17 @@
 
 // Based on table-master
 
-const _ = require('lodash')
-const chalk = require('chalk')
-const stripAnsi = require('strip-ansi')
+import chalk from "chalk";
+import consola from "consola";
+import _ from "lodash";
+import stripAnsi from "strip-ansi";
 
 /**
  * Default (white)space constant.
  *
  * @type {string}
  */
-const SPACE = '\u0020'
+const SPACE = "\u0020";
 
 /**
  * The default settings.
@@ -42,17 +44,17 @@ const SPACE = '\u0020'
  */
 const defaultSettings = {
   indent: 3,
-  rowSpace: 1
-}
+  rowSpace: 1,
+};
 
 /**
  * Function to overload the default settings.
  *
  * @param newDefaults The new default settings.
  */
-const setDefaults = function (newDefaults: any) {
-  Object.assign(defaultSettings, newDefaults)
-}
+const setDefaults = (newDefaults: any) => {
+  Object.assign(defaultSettings, newDefaults);
+};
 
 /**
  * Creates an empty string with the specified length.
@@ -60,8 +62,8 @@ const setDefaults = function (newDefaults: any) {
  * @param {number} length The length of the string.
  * @returns {string} The string with the specified length.
  */
-function emptyString (length: number) {
-  return new Array(++length).join(SPACE)
+function emptyString(length: number) {
+  return new Array(++length).join(SPACE);
 }
 
 /**
@@ -70,8 +72,8 @@ function emptyString (length: number) {
  * @param str The string to be cleaned.
  * @returns {string} The cleaned string.
  */
-function cleanString (str: string) {
-  return stripAnsi(str.toString())
+function cleanString(str: string) {
+  return stripAnsi(str.toString());
 }
 
 /**
@@ -80,13 +82,13 @@ function cleanString (str: string) {
  * @param objArray Object to get the keys of.
  * @returns {*} Array, containing all keys as string values.
  */
-function getAllKeys (objArray: any) {
-  let keys: string[] = []
-  _.forEach(objArray, function (row: any) {
-    if (!row || typeof row === 'string') return
-    keys = keys.concat(Object.keys(row))
-  })
-  return _.union(keys)
+function getAllKeys(objArray: any) {
+  let keys: string[] = [];
+  _.forEach(objArray, (row: any) => {
+    if (!row || typeof row === "string") { return; }
+    keys = keys.concat(Object.keys(row));
+  });
+  return _.union(keys);
 }
 
 /**
@@ -96,22 +98,22 @@ function getAllKeys (objArray: any) {
  * @param objArray The object array.
  * @returns {Object} JSON object containing the max length for each key.
  */
-function getMaxLength (keys: string[], objArray: any[]) {
-  const maxRowLength: any = {}
-  _.forEach(keys, function (key: string) {
-    maxRowLength[key] = cleanString(key).length
-  })
+function getMaxLength(keys: string[], objArray: any[]) {
+  const maxRowLength: any = {};
+  _.forEach(keys, (key: string) => {
+    maxRowLength[key] = cleanString(key).length;
+  });
 
-  _.forEach(objArray, function (objRow: any) {
-    _.forEach(objRow, function (val: string, key: string) {
-      const rowLength = cleanString(val).length
+  _.forEach(objArray, (objRow: any) => {
+    _.forEach(objRow, (val: string, key: string) => {
+      const rowLength = cleanString(val).length;
       if (maxRowLength[key] < rowLength) {
-        maxRowLength[key] = rowLength
+        maxRowLength[key] = rowLength;
       }
-    })
-  })
+    });
+  });
 
-  return maxRowLength
+  return maxRowLength;
 }
 
 /**
@@ -123,24 +125,24 @@ function getMaxLength (keys: string[], objArray: any[]) {
  * @param format The align of the string, whether (l)eft, (r)ight or (c)enter aligned.
  * @returns {string} The trimmed/extended and aligned string.
  */
-function toLength (str: string, length: number, format: string) {
+function toLength(str: string, length: number, format: string) {
   if (!str) {
-    return emptyString(length)
+    return emptyString(length);
   }
-  let newStr = str.toString()
-  let diff = cleanString(str).length - length
+  let newStr = str.toString();
+  let diff = cleanString(str).length - length;
   if (diff < 0) {
-    diff *= -1
+    diff *= -1;
   }
-  if (!format || format === 'l') {
-    newStr = newStr + emptyString(diff)
-  } else if (format === 'r') {
-    newStr = emptyString(diff) + newStr
+  if (!format || format === "l") {
+    newStr = newStr + emptyString(diff);
+  } else if (format === "r") {
+    newStr = emptyString(diff) + newStr;
   } else { // (format === "c")
-    const s = diff / 2
-    newStr = emptyString(Math.ceil(s)) + newStr + emptyString(Math.floor(s))
+    const s = diff / 2;
+    newStr = emptyString(Math.ceil(s)) + newStr + emptyString(Math.floor(s));
   }
-  return newStr
+  return newStr;
 }
 
 /**
@@ -150,63 +152,63 @@ function toLength (str: string, length: number, format: string) {
  * @param preProcessor
  * @param settings
  */
-const printTable = function (printArray: any[], format: string, preProcessor: any, settings: any) {
-  format = format || ''
-  preProcessor = preProcessor || []
-  settings = settings || defaultSettings
+const printTable = (printArray: any[], format: string, preProcessor: any, settings: any) => {
+  format = format || "";
+  preProcessor = preProcessor || [];
+  settings = settings || defaultSettings;
 
-  const INDENT = emptyString(settings.indent)
-  const ROW_SPACER = emptyString(settings.rowSpace)
+  const INDENT = emptyString(settings.indent);
+  const ROW_SPACER = emptyString(settings.rowSpace);
 
-  const headings = getAllKeys(printArray)
-  const maxLength = getMaxLength(headings, printArray)
-  const maxLengths = Object.keys(maxLength).reduce((s, k) => s + maxLength[k], 0)
+  const headings = getAllKeys(printArray);
+  const maxLength = getMaxLength(headings, printArray);
+  const maxLengths = Object.keys(maxLength).reduce((s, k) => s + maxLength[k], 0);
 
   // print headline
-  const headline: string[] = []
-  const seperator: string[] = []
+  const headline: string[] = [];
+  const seperator: string[] = [];
 
-  _.forEach(headings, function (header: string) {
-    headline.push(toLength(header, maxLength[header], 'c'))
-    seperator.push(new Array(maxLength[header] + 1).join('-'))
-  })
+  _.forEach(headings, (header: string) => {
+    headline.push(toLength(header, maxLength[header], "c"));
+    seperator.push(new Array(maxLength[header] + 1).join("-"));
+  });
 
-  console.log(INDENT + seperator.join(ROW_SPACER))
-  console.log(INDENT + headline.join(ROW_SPACER))
-  console.log(INDENT + seperator.join(ROW_SPACER))
+  consola.log(INDENT + seperator.join(ROW_SPACER));
+  consola.log(INDENT + headline.join(ROW_SPACER));
+  consola.log(INDENT + seperator.join(ROW_SPACER));
 
   // print rows
-  _.forEach(printArray, function (row: any) {
-    const line: any[] = []
+  _.forEach(printArray, (row: any) => {
+    const line: any[] = [];
 
-    if (row === null || typeof row === 'string') {
-      if (row === null || row === '') {
-        return console.log('')
+    if (row === null || typeof row === "string") {
+      if (row === null || row === "") {
+        return consola.log("");
       }
-      return console.log(chalk.grey.bold(toLength(row || '', maxLengths, 'l')))
+      return consola.log(chalk.grey.bold(toLength(row || "", maxLengths, "l")));
     }
 
-    _.forEach(headings, function (header: string, i: number) {
-      let str = row[header] || ''
+    _.forEach(headings, (header: string, i: number) => {
+      let str = row[header] || "";
 
       if (_.isFunction(preProcessor[i])) {
-        str = preProcessor[i](str) || str
+        str = preProcessor[i](str) || str;
       }
 
-      line.push(toLength(str, maxLength[header], format.substr(i, 1)))
-    })
-    console.log(INDENT + line.join(ROW_SPACER))
-  })
-}
+      line.push(toLength(str, maxLength[header], format.substr(i, 1)));
+    });
+    consola.log(INDENT + line.join(ROW_SPACER));
+  });
+};
 
 /**
  * Exports the printTable function via module export.
  * @type {Function} The printTable function.
  */
-exports.printTable = printTable
+exports.printTable = printTable;
 
 /**
  * Exports the setDefaults function via module export.
  * @type {Function} The setDefaults function.
  */
-exports.setDefaults = setDefaults
+exports.setDefaults = setDefaults;

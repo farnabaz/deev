@@ -6,6 +6,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "mongoose": "^5.4.19"
   },

@@ -1,1 +1,1 @@
-export * from '@deev/core'
+export * from "@deev/core";

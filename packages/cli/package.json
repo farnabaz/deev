@@ -7,12 +7,17 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^11.11.7",
     "typescript": "^3.3.4000"
   },
   "dependencies": {
     "@deev/core": "0.0.0",
+    "consola": "^2.5.7",
     "ts-node": "^8.0.3"
   },
   "publishConfig": {

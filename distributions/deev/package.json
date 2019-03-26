@@ -7,10 +7,15 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "dependencies": {
     "@deev/cli": "^0.0.0",
     "@deev/core": "^0.0.0",
-    "@deev/route-table": "^0.0.0"
+    "@deev/route-table": "^0.0.0",
+    "consola": "^2.5.7"
   },
   "devDependencies": {
     "@types/node": "^11.11.6",

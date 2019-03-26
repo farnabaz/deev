@@ -6,13 +6,18 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "chalk": "^2.4.2",
+    "consola": "^2.5.7",
     "lodash": "^4.17.11",
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
+    "@types/lodash": "^4.14.123",
     "@types/node": "^11.11.6",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.4000"

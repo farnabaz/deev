@@ -1,24 +1,24 @@
-import path from 'path'
-import fs from 'fs'
-import { register } from 'ts-node'
-import { Server } from '@deev/core'
+import { Server } from "@deev/core";
+import fs from "fs";
+import path from "path";
+import { register } from "ts-node";
 
-async function run(_argv: string[]) {
-    const argv = _argv ? Array.from(_argv) : process.argv.slice(2)
+async function run(args: string[]) {
+    const argv = args ? Array.from(args) : process.argv.slice(2);
 
-    if ((!argv[0] || argv[0][0] === '-' || fs.existsSync(argv[0]))) {
-        argv.unshift('dev')
+    if ((!argv[0] || argv[0][0] === "-" || fs.existsSync(argv[0]))) {
+        argv.unshift("dev");
       }
-    
-    const root = path.resolve(argv[1] || '.');
 
-    register()
+    const root = path.resolve(argv[1] || ".");
 
-    const server = new Server(root)
+    register();
 
-    return await server.start()
+    const server = new Server(root);
+
+    return server.start();
 }
 
 export {
-    run
-}
+    run,
+};

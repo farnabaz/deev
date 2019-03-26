@@ -2,7 +2,6 @@
 
 require('../dist/cli.js').run()
   .catch((error) => {
-    console.log(error);
-    
+    require('consola').fatal(error)
     require('exit')(2)
   })

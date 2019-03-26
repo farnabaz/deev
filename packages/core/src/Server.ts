@@ -1,96 +1,95 @@
-import fs from 'fs'
+import fs from "fs";
 
-import { routes } from './Routes'
-import Service from './Service';
-import Config from './Config';
+import Config from "./Config";
+import { routes } from "./Routes";
+import Service from "./Service";
 
 export default class Server {
-    plugins: any[] = []
+    public plugins: any[] = [];
 
-    services: Service[] = []
+    public services: Service[] = [];
 
-    options: Config = new Config({})
+    public options: Config = new Config({});
 
-    root: string = ''
+    public root: string = "";
 
-    routes: any[] = []
+    public routes: any[] = [];
 
-    models: any[] = []
+    public models: any[] = [];
 
     constructor(root: string) {
-        this.root = root
-        this.options = new Config(this.require('~/deev.config'))
+        this.root = root;
+        this.options = new Config(this.require("~/deev.config"));
     }
 
-    resolve(path: string) {
-        return path.replace('~', this.root);
+    public resolve(path: string) {
+        return path.replace("~", this.root);
     }
 
-    async import(path: string) {
-        let file = await import(this.resolve(path))
+    public async import(path: string) {
+        let file = await import(this.resolve(path));
         if (file.default) {
-            file = file.default
+            file = file.default;
         }
-        return file
+        return file;
     }
 
-    require(path: string) {
-        let file = require(this.resolve(path))
+    public require(path: string) {
+        let file = require(this.resolve(path));
         if (file.default) {
-            file = file.default
+            file = file.default;
         }
-        return file
+        return file;
     }
 
-    async loadControllers() {
-        const controllers = await fs.readdirSync(this.resolve('~/controllers'))
-        await Promise.all(controllers.map(c => this.import('~/controllers/' + c)))
+    public async loadControllers() {
+        const controllers = await fs.readdirSync(this.resolve("~/controllers"));
+        await Promise.all(controllers.map((c) => this.import("~/controllers/" + c)));
         this.routes = routes;
     }
 
-    async loadModels() {
-        const models = await fs.readdirSync(this.resolve('~/models'))
-        await Promise.all(models.map(c => this.import('~/models' + c)))
+    public async loadModels() {
+        const models = await fs.readdirSync(this.resolve("~/models"));
+        await Promise.all(models.map((c) => this.import("~/models" + c)));
         this.models = routes;
     }
 
-    async loadPlugins() {
+    public async loadPlugins() {
         const pluginsList = this.options.plugins.map(async (plugin: any) => {
-            const $plugin = await this.import(plugin)
-            return $plugin(this, this.options)
-        })
-        this.plugins = await Promise.all(pluginsList)
+            const $plugin = await this.import(plugin);
+            return $plugin(this, this.options);
+        });
+        this.plugins = await Promise.all(pluginsList);
     }
 
-    async loadServices() {
+    public async loadServices() {
         const servicesList = this.options.services.map(async (service: any) => {
-            const $service = this.require(this.resolve(service))
-            return new $service(this, this.options)
-        })
+            const $service = this.require(this.resolve(service));
+            return new $service(this, this.options);
+        });
 
-        this.services = await Promise.all(servicesList)
+        this.services = await Promise.all(servicesList);
     }
 
-    async init() {
-        await this.loadServices()
+    public async init() {
+        await this.loadServices();
 
-        await this.loadControllers()
+        await this.loadControllers();
 
-        await this.loadPlugins()
+        await this.loadPlugins();
 
-        await Promise.all(this.services.map((service: any) => service.init(this, this.options)))
+        await Promise.all(this.services.map((service: any) => service.init(this, this.options)));
     }
 
-    async start() {
+    public async start() {
 
-        await this.init()
+        await this.init();
 
-        await Promise.all(this.services.map((service: any) => service.start(this, this.options)))
+        await Promise.all(this.services.map((service: any) => service.start(this, this.options)));
     }
 
+    public async stop() {
 
-    async stop() {
-
-        await Promise.all(this.services.map((service: any) => service.stop(this, this.options)))
+        await Promise.all(this.services.map((service: any) => service.stop(this, this.options)));
     }
 }

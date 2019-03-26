@@ -1,20 +1,23 @@
 import { Server } from ".";
 
 export default class Service {
-    options?: any
-    context?: Server
+    public options?: any;
+    public context?: Server;
     constructor(context: any) {
-        this.context = context
-        const optionsKey = this.constructor.name
-        this.options = context.options.get(optionsKey)
+        this.context = context;
+        const optionsKey = this.constructor.name;
+        this.options = context.options.get(optionsKey);
     }
 
-    // @ts-ignore
-    async init(): Promise<void>{}
+    public async init(): Promise<void> {
+        // Need Implementaion
+    }
 
-    // @ts-ignore
-    async start(): Promise<void>{}
+    public async start(): Promise<void> {
+        // Need Implementaion
+    }
 
-    // @ts-ignore
-    async stop(): Promise<void> {}
+    public async stop(): Promise<void> {
+        // Need Implementaion
+    }
 }

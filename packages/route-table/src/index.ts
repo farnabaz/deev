@@ -1,1 +1,1 @@
-export * from './RouteTable'
+export * from "./RouteTable";

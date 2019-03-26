@@ -6,6 +6,9 @@
   "scripts": {
     "build": "tsc"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/node": "^11.11.7",
     "ts-node": "^8.0.3",

@@ -1,10 +1,13 @@
 {
     "compilerOptions": {
+        "target": "es5",
         "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "noImplicitAny": true,
         "moduleResolution": "node",
+        "lib": [
+            "es2015"
+        ],
+        "esModuleInterop": true,
+        "noImplicitAny": true,
         "experimentalDecorators": true,
         "declaration": true,
         "outDir": "./dist",
@@ -14,7 +17,17 @@
                 "node_modules/*",
                 "types/*"
             ]
-        }
+        },
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin",
+                "alwaysShowRuleFailuresAsWarnings": false,
+                "ignoreDefinitionFiles": true,
+                "configFile": "../tslint.json",
+                "suppressWhileTypeErrorsPresent": false,
+                "mockTypeScriptVersion": false
+            }
+        ]
     },
     "include": [
         "*/**/*",

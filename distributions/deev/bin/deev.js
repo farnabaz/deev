@@ -3,5 +3,5 @@
 require('@deev/cli').run()
   .catch((error) => {
     require('consola').fatal(error)
-    require('exit')(2)
+    process.exit(2)
   })

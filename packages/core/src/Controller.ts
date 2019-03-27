@@ -1,9 +1,9 @@
-import { addPrefix, getRoute } from "./Routes";
+import { addPrefix, getRoute, addRoute, getRoutes } from "./Routes";
 
-export function route(method: string, path: string, middlewares?: any[]) {
+export function Route(method: string, path: string, middlewares?: any[]) {
     return function routeDecorator(target: any, func: string) {
-        const $route = getRoute(target.constructor.name, func);
-        Object.assign($route, {
+        const route = getRoute(target.constructor.name, func);
+        Object.assign(route, {
             handler: target[func],
             method,
             middlewares,
@@ -13,51 +13,48 @@ export function route(method: string, path: string, middlewares?: any[]) {
 }
 
 export function Get(path: string, middlewares?: any[]) {
-    return route("GET", path, middlewares);
+    return Route("GET", path, middlewares);
 }
 
 export function Post(path: string, middlewares?: any[]) {
-    return route("POST", path, middlewares);
+    return Route("POST", path, middlewares);
 }
 
 export function Put(path: string, middlewares?: any[]) {
-    return route("PUT", path, middlewares);
+    return Route("PUT", path, middlewares);
 }
 
 export function Path(path: string, middlewares?: any[]) {
-    return route("PATCH", path, middlewares);
+    return Route("PATCH", path, middlewares);
 }
 
 export function Delete(path: string, middlewares?: any[]) {
-    return route("DELETE", path, middlewares);
+    return Route("DELETE", path, middlewares);
 }
 
-export function query(path: string) {
-    // @ts-ignore
+export function Query(path?: string) {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const $route = getRoute(target.constructor.name, func);
+        const route = getRoute(target.constructor.name, func);
 
-        $route.params!.push(`query.${path}`);
+        route.params[index] = path ? `query.${path}` : "query";
     };
 }
-export function param(path: string) {
-    // @ts-ignore
+export function Param(path?: string) {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const $route = getRoute(target.constructor.name, func);
+        const route = getRoute(target.constructor.name, func);
 
-        $route.params!.push(`params.${path}`);
+        route.params[index] = path ? `params.${path}` : "params";
     };
 }
-export function body(path: string) {
-    // @ts-ignore
+export function Body(path?: string) {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const $route = getRoute(target.constructor.name, func);
+        const route = getRoute(target.constructor.name, func);
 
-        $route.params!.push(`body.${path}`);
+        route.params[index] = path ? `body.${path}` : "body";
     };
 }
 
-export function prefix(path: string) {
+export function Prefix(path: string) {
     return function prefixDecorator(cls: any) {
         const controllerName = cls.name;
         addPrefix(controllerName, path);
@@ -65,5 +62,8 @@ export function prefix(path: string) {
 }
 
 export class Controller {
-
+    public routes: any[] = [];
+    constructor() {
+        this.routes = getRoutes(this.constructor.name);
+    }
 }

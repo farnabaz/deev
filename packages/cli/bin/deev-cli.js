@@ -3,5 +3,5 @@
 require('../dist/cli.js').run()
   .catch((error) => {
     require('consola').fatal(error)
-    require('exit')(2)
+    process.exit(2)
   })

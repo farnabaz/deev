@@ -1,6 +1,5 @@
 import chalk from "chalk";
-// @ts-ignore
-import Table from "./table";
+import { printTable } from "./table";
 
 const COLORS: { [key: string]: (txt: string) => string } = {
     Controller: chalk.cyan,
@@ -21,5 +20,5 @@ export default function RoutePrinterPlugin(context: any) {
             Path: color(route.prefix + route.path),
         };
     });
-    Table.printTable(t, "lll", null, { indent: 0, rowSpace: 2 });
+    printTable(t, "lll", null, { indent: 0, rowSpace: 2 });
 }

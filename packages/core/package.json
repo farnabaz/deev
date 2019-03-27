@@ -15,7 +15,8 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "@deev/route-table": "^0.0.0"
+    "@deev/route-table": "^0.0.0",
+    "consola": "^2.5.7"
   },
   "publishConfig": {
     "access": "public"

@@ -52,7 +52,7 @@ const defaultSettings = {
  *
  * @param newDefaults The new default settings.
  */
-const setDefaults = (newDefaults: any) => {
+export const setDefaults = (newDefaults: any) => {
   Object.assign(defaultSettings, newDefaults);
 };
 
@@ -152,7 +152,7 @@ function toLength(str: string, length: number, format: string) {
  * @param preProcessor
  * @param settings
  */
-const printTable = (printArray: any[], format: string, preProcessor: any, settings: any) => {
+export const printTable = (printArray: any[], format: string, preProcessor: any, settings: any) => {
   format = format || "";
   preProcessor = preProcessor || [];
   settings = settings || defaultSettings;
@@ -200,15 +200,3 @@ const printTable = (printArray: any[], format: string, preProcessor: any, settin
     consola.log(INDENT + line.join(ROW_SPACER));
   });
 };
-
-/**
- * Exports the printTable function via module export.
- * @type {Function} The printTable function.
- */
-exports.printTable = printTable;
-
-/**
- * Exports the setDefaults function via module export.
- * @type {Function} The setDefaults function.
- */
-exports.setDefaults = setDefaults;

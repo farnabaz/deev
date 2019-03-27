@@ -1,8 +1,10 @@
 import fs from "fs";
 
 import Config from "./Config";
+import { importModule } from "./imports";
 import { routes } from "./Routes";
 import Service from "./Service";
+import { Controller } from "./Controller";
 
 export default class Server {
     public plugins: any[] = [];
@@ -17,6 +19,8 @@ export default class Server {
 
     public models: any[] = [];
 
+    public controllers: Controller[] = [];
+
     constructor(root: string) {
         this.root = root;
         this.options = new Config(this.require("~/deev.config"));
@@ -27,15 +31,7 @@ export default class Server {
     }
 
     public async import(path: string) {
-        let file = await import(this.resolve(path));
-        if (file.default) {
-            file = file.default;
-        }
-        return file;
-    }
-
-    public require(path: string) {
-        let file = require(this.resolve(path));
+        let file = await importModule(this.resolve(path));
         if (file.default) {
             file = file.default;
         }
@@ -43,8 +39,9 @@ export default class Server {
     }
 
     public async loadControllers() {
-        const controllers = await fs.readdirSync(this.resolve("~/controllers"));
-        await Promise.all(controllers.map((c) => this.import("~/controllers/" + c)));
+        const controllersFile = await fs.readdirSync(this.resolve("~/controllers"));
+        const controllers = await Promise.all(controllersFile.map((c) => this.import("~/controllers/" + c)));
+        this.controllers = controllers.map(Controller => new Controller());
         this.routes = routes;
     }
 
@@ -64,7 +61,7 @@ export default class Server {
 
     public async loadServices() {
         const servicesList = this.options.services.map(async (service: any) => {
-            const $service = this.require(this.resolve(service));
+            const $service = await this.import(this.resolve(service));
             return new $service(this, this.options);
         });
 
@@ -91,5 +88,13 @@ export default class Server {
     public async stop() {
 
         await Promise.all(this.services.map((service: any) => service.stop(this, this.options)));
+    }
+
+    private require(path: string) {
+        let file = require(this.resolve(path));
+        if (file.default) {
+            file = file.default;
+        }
+        return file;
     }
 }

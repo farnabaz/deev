@@ -1,6 +1,6 @@
-import { Service } from "deev";
-import Hapi from "hapi";
 import consola from "consola";
+import { Service, Controller } from "deev";
+import Hapi from "hapi";
 import ObjectPath from "object-path";
 
 export default class TemplateService extends Service {
@@ -9,7 +9,7 @@ export default class TemplateService extends Service {
     public async init() {
         this.server = await this._createServer(this.options);
 
-        await this._processRoutes(this.server, this.context.routes);
+        await this._processRoutes(this.server, this.context.controllers);
     }
 
     public async start() {
@@ -29,22 +29,26 @@ export default class TemplateService extends Service {
         return server;
     }
 
-    public async _processRoutes(server: Hapi.Server, routes: any[]) {
-        routes.forEach((route) => server.route({
-            method: route.method,
-            path: route.prefix + route.path,
-            async handler(re, h) {
-                const data = {
-                    body: re.payload,
-                    params: re.params,
-                    query: re.query,
-                    request: re,
-                };
-                const args = route.params.map((p: string) => ObjectPath.get(data, p));
-
-                return route.handler.apply(route.prototype, args);
-            },
-        }));
+    public async _processRoutes(server: Hapi.Server, controllers: Controller[]) {
+        for (const controller of controllers) {
+            for (const route of controller.routes) {
+                server.route({
+                    method: route.method,
+                    path: route.prefix + route.path,
+                    async handler(re, h) {
+                        const data = {
+                            body: re.payload,
+                            params: re.params,
+                            query: re.query,
+                            request: re,
+                        };
+                        const args = route.params.map((p: string) => ObjectPath.get(data, p));
+        
+                        return await route.handler.apply(controller, args);
+                    },
+                })
+            }
+        }
     }
 
     public async _startServer(server: Hapi.Server) {
@@ -54,6 +58,6 @@ export default class TemplateService extends Service {
             consola.fatal(err);
             process.exit(1);
         }
-        consola.success("Server running at:" + server.info.uri);
+        consola.success("Server running at: " + server.info.uri);
     }
 }

@@ -1,4 +1,4 @@
-import { addPrefix, getRoute, addRoute, getRoutes } from "./Routes";
+import { addPrefix, getRoute, getRoutes } from "./Routes";
 
 export function Route(method: string, path: string, middlewares?: any[]) {
     return function routeDecorator(target: any, func: string) {
@@ -62,7 +62,7 @@ export function Prefix(path: string) {
 }
 
 export class Controller {
-    public routes: any[] = [];
+    public readonly routes: any[] = [];
     constructor() {
         this.routes = getRoutes(this.constructor.name);
     }

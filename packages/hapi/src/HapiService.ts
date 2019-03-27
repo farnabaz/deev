@@ -1,5 +1,5 @@
 import consola from "consola";
-import { Service, Controller } from "deev";
+import { Controller, Service } from "deev";
 import Hapi from "hapi";
 import ObjectPath from "object-path";
 
@@ -43,10 +43,10 @@ export default class TemplateService extends Service {
                             request: re,
                         };
                         const args = route.params.map((p: string) => ObjectPath.get(data, p));
-        
+
                         return await route.handler.apply(controller, args);
                     },
-                })
+                });
             }
         }
     }

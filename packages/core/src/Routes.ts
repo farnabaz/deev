@@ -36,5 +36,5 @@ export function getRoute(controller: string, func: string) {
 }
 
 export function getRoutes(controller: string) {
-    return routes.filter((r) => r.controller === controller);;
+    return routes.filter((r) => r.controller === controller);
 }

@@ -1,10 +1,10 @@
 import fs from "fs";
 
 import Config from "./Config";
+import { Controller } from "./Controller";
 import { importModule } from "./imports";
 import { routes } from "./Routes";
 import Service from "./Service";
-import { Controller } from "./Controller";
 
 export default class Server {
     public plugins: any[] = [];
@@ -41,7 +41,7 @@ export default class Server {
     public async loadControllers() {
         const controllersFile = await fs.readdirSync(this.resolve("~/controllers"));
         const controllers = await Promise.all(controllersFile.map((c) => this.import("~/controllers/" + c)));
-        this.controllers = controllers.map(Controller => new Controller());
+        this.controllers = controllers.map<Controller>((controller) => new controller());
         this.routes = routes;
     }
 

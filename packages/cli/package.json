@@ -1,6 +1,6 @@
 {
   "name": "@deev/cli",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "main": "dist/index.js",
   "bin": "bin/deev-cli.js",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "typescript": "^3.3.4000"
   },
   "dependencies": {
-    "@deev/core": "0.0.0",
+    "@deev/core": "^0.0.1-beta.0",
     "consola": "^2.5.7",
     "ts-node": "^8.0.3"
   },

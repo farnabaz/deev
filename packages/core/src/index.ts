@@ -1,4 +1,4 @@
-export * from "./Controller";
+export * from "./routes";
 import Server from "./Server";
 import Service from "./Service";
 

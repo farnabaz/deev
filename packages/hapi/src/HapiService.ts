@@ -35,16 +35,15 @@ export default class TemplateService extends Service {
                 server.route({
                     method: route.method,
                     path: route.prefix + route.path,
-                    async handler(re, h) {
-                        const data = {
+                    async handler(re, h: any) {
+                        return await controller.__handleRequest(route, {
                             body: re.payload,
                             params: re.params,
                             query: re.query,
+                            render: h.view,
                             request: re,
-                        };
-                        const args = route.params.map((p: string) => ObjectPath.get(data, p));
-
-                        return await route.handler.apply(controller, args);
+                            response: h,
+                        });
                     },
                 });
             }

@@ -12,13 +12,16 @@ const COLORS: { [key: string]: (txt: string) => string } = {
 export default function RoutePrinterPlugin(context: any) {
     const controllerColor = COLORS.Controller;
     const functionColor = COLORS.Function;
-    const t = context.routes.map((route: any) => {
-        const color = COLORS[route.method];
-        return {
-            Controller: `${controllerColor(route.controller)}.${functionColor(route.func)}`,
-            Method: color(route.method),
-            Path: color(route.prefix + route.path),
-        };
-    });
-    printTable(t, "lll", null, { indent: 0, rowSpace: 2 });
+    const table = [];
+    for (const controller of context.controllers) {
+        for (const route of controller.routes) {
+            const color = COLORS[route.method];
+            table.push({
+                Controller: `${controllerColor(route.controller)}.${functionColor(route.func)}`,
+                Method: color(route.method),
+                Path: color(route.prefix + route.path),
+            });
+        }
+    }
+    printTable(table, "lll", null, { indent: 0, rowSpace: 2 });
 }

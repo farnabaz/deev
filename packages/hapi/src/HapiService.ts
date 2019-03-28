@@ -1,7 +1,6 @@
 import consola from "consola";
 import { Controller, Service } from "deev";
 import Hapi from "hapi";
-import ObjectPath from "object-path";
 
 export default class TemplateService extends Service {
     public server: Hapi.Server;

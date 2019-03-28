@@ -1,4 +1,3 @@
-// ts
 /**
  * The MIT License (MIT)
  *

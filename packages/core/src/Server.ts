@@ -81,7 +81,6 @@ export default class Server {
     }
 
     public async stop() {
-
         await Promise.all(this.services.map((service: any) => service.stop(this, this.options)));
     }
 

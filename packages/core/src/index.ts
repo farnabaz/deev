@@ -1,8 +1,3 @@
 export * from "./routes";
-import Server from "./Server";
-import Service from "./Service";
-
-export {
-    Server,
-    Service,
-};
+export { default as Server } from "./Server";
+export { default as Service } from "./Service";

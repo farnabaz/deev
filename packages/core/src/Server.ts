@@ -18,9 +18,9 @@ export default class Server {
 
     public controllers: Controller[] = [];
 
-    constructor(root: string) {
+    constructor(root: string, config: any) {
         this.root = root;
-        this.options = new Config(this.require("~/deev.config"));
+        this.options = new Config(config);
     }
 
     public resolve(path: string) {
@@ -84,11 +84,4 @@ export default class Server {
         await Promise.all(this.services.map((service: any) => service.stop(this, this.options)));
     }
 
-    private require(path: string) {
-        let file = require(this.resolve(path));
-        if (file.default) {
-            file = file.default;
-        }
-        return file;
-    }
 }

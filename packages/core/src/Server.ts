@@ -1,8 +1,8 @@
 import fs from "fs";
 
 import Config from "./Config";
-import { Controller } from "./routes";
 import { importModule } from "./imports";
+import { Controller } from "./routes";
 import Service from "./Service";
 
 export default class Server {

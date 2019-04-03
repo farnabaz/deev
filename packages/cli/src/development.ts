@@ -1,6 +1,6 @@
-import { register } from "ts-node";
-import path from "path";
 import Consola from "consola";
+import path from "path";
+import { register } from "ts-node";
 
 export default async (root: string) => {
     register();

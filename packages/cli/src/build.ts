@@ -1,23 +1,23 @@
-import fs from "fs";
 import consola from "consola";
+import fs from "fs";
 import path from "path";
 import * as ts from "typescript";
 
 export default async (root: string) => {
     const files = getAllFiles(root, /.*\.ts$/, /(node_modules|\.deev)/);
     compile(files, {
-        lib: [
-            "es2015",
-        ],
-        esModuleInterop: true,
-        noImplicitAny: true,
-        experimentalDecorators: true,
-        declaration: false,
-        outDir: "./.deev",
-        target: ts.ScriptTarget.ES5,
-        module: ts.ModuleKind.CommonJS,
+      declaration: false,
+      esModuleInterop: true,
+      experimentalDecorators: true,
+      lib: [
+        "es2015",
+      ],
+      module: ts.ModuleKind.CommonJS,
+      noImplicitAny: true,
+      outDir: "./.deev",
+      target: ts.ScriptTarget.ES5,
     });
-}
+};
 
 /**
  * Find all files inside a dir, recursively.
@@ -56,11 +56,11 @@ function compile(fileNames: string[], options: ts.CompilerOptions): void {
         "\n",
       );
       consola.error(
-        `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
+        `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`,
       );
     } else {
       consola.warn(
-        `${ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")}`
+        `${ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")}`,
       );
     }
   });

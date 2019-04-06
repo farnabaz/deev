@@ -1,4 +1,5 @@
 import * as Store from "./store";
+import "reflect-metadata";
 
 export default class Route {
 
@@ -14,6 +15,29 @@ export default class Route {
         };
     }
 
+    public static request() {
+        return function prefixDecorator(target: any, func: string, index: number) {
+            const route = Store.getRoute(target.constructor.name, func);
+            const defs = Reflect.getMetadata("design:paramtypes", target, func);
+
+            route.params[index] = {
+                def: defs[index],
+                path: "request",
+            };
+        };
+    }
+
+    public static response() {
+        return function prefixDecorator(target: any, func: string, index: number) {
+            const route = Store.getRoute(target.constructor.name, func)
+            const defs = Reflect.getMetadata("design:paramtypes", target, func);
+
+            route.params[index] = {
+                def: defs[index],
+                path: "response",
+            };
+        };
+    }
     /**
      * Fetch single propery from request query params and assign its value to
      * an argumant of handler function
@@ -23,8 +47,12 @@ export default class Route {
     public static query(path?: string) {
         return function prefixDecorator(target: any, func: string, index: number) {
             const route = Store.getRoute(target.constructor.name, func);
+            const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
-            route.params[index] = path ? `query.${path}` : "query";
+            route.params[index] = {
+                def: defs[index],
+                path: path ? `query.${path}` : "query",
+            };
         };
     }
 
@@ -37,8 +65,12 @@ export default class Route {
     public static param(path?: string) {
         return function prefixDecorator(target: any, func: string, index: number) {
             const route = Store.getRoute(target.constructor.name, func);
+            const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
-            route.params[index] = path ? `params.${path}` : "params";
+            route.params[index] = {
+                def: defs[index],
+                path: path ? `params.${path}` : "params",
+            };
         };
     }
 
@@ -48,11 +80,15 @@ export default class Route {
      *
      * @param path query object path
      */
-    public static body(path?: string) {
+    public static body() {
         return function prefixDecorator(target: any, func: string, index: number) {
             const route = Store.getRoute(target.constructor.name, func);
+            const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
-            route.params[index] = path ? `body.${path}` : "body";
+            route.params[index] = {
+                def: defs[index],
+                path: "body",
+            };
         };
     }
 

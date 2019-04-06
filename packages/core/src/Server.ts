@@ -38,7 +38,7 @@ export default class Server {
     public async loadControllers() {
         const controllersFile = await fs.readdirSync(this.resolve("~/controllers"));
         const controllers = await Promise.all(controllersFile.map((c) => this.import("~/controllers/" + c)));
-        this.controllers = controllers.map<Controller>((controller) => new controller());
+        this.controllers = controllers.map<Controller>((controller) => new controller(this));
     }
 
     public async loadModels() {
@@ -82,6 +82,12 @@ export default class Server {
 
     public async stop() {
         await Promise.all(this.services.map((service: any) => service.stop(this, this.options)));
+    }
+
+    public registerController(controller: any) {
+        this.controllers.push(
+            new controller(this),
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 import objectPath from "object-path";
 import { getRoutes } from "./store";
+import Model from "./Model";
 
 export interface IServerData {
     body: any;
@@ -12,12 +13,21 @@ export interface IServerData {
 
 export default class Controller {
     public readonly routes: any[] = [];
-    constructor() {
+    public context: any = null;
+    constructor(context: any) {
+        this.context = context;
         this.routes = getRoutes(this.constructor.name);
     }
 
     public async __handleRequest(route: any, data: IServerData) {
-        const args = route.params.map((p: string) => objectPath.get(data, p));
+        const args = route.params.map((param: any) => {
+            const value = objectPath.get(data, param.path);
+            if (param.def as Model) {
+                return new param.def(value);
+            }
+            // primitive type
+            return param.def(value);
+        });
 
         return await route.handler.apply(this, args);
     }

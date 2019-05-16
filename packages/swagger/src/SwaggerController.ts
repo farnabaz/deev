@@ -1,111 +1,114 @@
-import { Controller, Route, Get, Request, Response, Path } from "deev";
+import { Controller, Route, Request, Response, Path, Get } from "deev";
 import send from "send";
 import { getAbsoluteFSPath } from "swagger-ui-dist";
 
-import { getC } from "./Swagger";
+function describeDefinitions(definitions: any[]) {
+  const defs: any = {};
+  function describe(definition: any) {
+    if (defs[definition.name] || definition.prototype.__props__ === undefined) {
+      return;
+    }
+    const props = definition.prototype.__props__;
+    const properties = Object.keys(props).reduce((acc: any, key: string) => {
+      const model = props[key].def;
+      defs[definition.name] = {}; // pre-register definition
+      if (model.__MODEL__) {
+        describe(model);
+        acc[key] = {
+          $ref: `#/definitions/${model.name}`,
+        };
+      } else {
+        acc[key] = {
+          type: model.name.toLowerCase(),
+        };
+      }
+      return acc;
+    }, {});
+
+    defs[definition.name] = {
+      type: "object",
+      properties,
+      xml: {
+        name: definition.name,
+      },
+    };
+  }
+
+  definitions.forEach((definition: () => void) => describe(definition));
+  return defs;
+}
+
+function describeParameters(route: Route) {
+  return route.params.map((param: any) => {
+    const $path = param.path.split(".");
+    const $in = $path[0];
+
+    const schema = param.def.__MODEL__ ? {
+      schema: {
+        $ref: "#/definitions/" + param.def.name,
+      },
+    } : {
+      type: param.def.name.toLowerCase(),
+    };
+
+    return {
+      in: $in,
+      name: $path.length > 1 ? $path[1] : $path[0],
+      description: "Pet object that needs to be added to the store",
+      required: true,
+      ...schema,
+    };
+  });
+}
 
 export default class SwaggerController extends Controller {
     private json: any = {
+        info: {},
         swagger: "2.0",
-        info: {
-          description: "This is a sample server Petstore server.",
-          version: "1.0.0",
-          title: "Swagger Petstore",
-          termsOfService: "http://swagger.io/terms/",
-          contact: {
-            email: "apiteam@swagger.io",
-          },
-          license: {
-            name: "Apache 2.0",
-            url: "http://www.apache.org/licenses/LICENSE-2.0.html",
-          },
-        },
-        host: "petstore.swagger.io",
-        basePath: "/v2",
-        tags: [
-          {
-            name: "HelloController",
-            description: "Everything about your Pets",
-            externalDocs: {
-              description: "Find out more",
-              url: "http://swagger.io",
-            },
-          },
-          {
-            name: "store",
-            description: "Access to Petstore orders",
-          },
-          {
-            name: "user",
-            description: "Operations about user",
-            externalDocs: {
-              description: "Find out more about our store",
-              url: "http://swagger.io",
-            },
-          },
-        ],
-        schemes: [
-          "https",
-          "http",
-        ],
+        tags: [],
     };
 
     @Get("/swagger.json")
-    public getJSON() {
-        const paths: any = {};
-        const controllers = getC();
-        const defs: any = {};
-        for (const controller of controllers) {
-            for (const route of controller.routes) {
-                if (!paths[route.path]) {
-                    paths[route.path] = {};
-                }
-                route.params.forEach((p: any) => {
-                  defs[p.def.name] = p.def;
-                });
-                paths[route.path][route.method.toLowerCase()] = {
-                    tags: [
-                      route.controller,
-                    ],
-                    summary: "Add a new pet to the store",
-                    description: "",
-                    operationId: "addPet",
-                    consumes: [
-                      "application/json",
-                      "application/xml",
-                    ],
-                    produces: [
-                      "application/xml",
-                      "application/json",
-                    ],
-                    parameters: route.params.map((param: any) => ({
-                      in: "body",
-                      name: "body",
-                      description: "Pet object that needs to be added to the store",
-                      required: true,
-                      schema: {
-                        $ref: "#/definitions/" + param.def.name,
-                      },
-                    })),
-                    responses: {
-                      405: {
-                        description: "Invalid input",
-                      },
+    public async getJSON() {
+      const paths: any = {};
+      const defs: any[] = [];
+      const controllers = this.context.controllers;
+      const packageInfo: any = await this.context.import("~/package.json");
+      for (const controller of controllers) {
+          for (const route of controller.routes) {
+              const path = route.getPath();
+              if (!paths[path]) {
+                  paths[path] = {};
+              }
+              route.params.forEach((p: any) => {
+                defs.push(p.def);
+              });
+              paths[path][route.method.toLowerCase()] = {
+                  tags: [
+                    route.controller,
+                  ],
+                  consumes: [
+                    "application/json",
+                    "application/xml",
+                  ],
+                  produces: [
+                    "application/xml",
+                    "application/json",
+                  ],
+                  parameters: describeParameters(route),
+                  responses: {
+                    405: {
+                      description: "Invalid input",
                     },
-                    security: [
-                      {
-                        petstore_auth: [
-                          "write:pets",
-                          "read:pets",
-                        ],
-                      },
-                    ],
-                  };
-            }
-        }
-        this.json.definitions = defs;
-        this.json.paths = paths;
-        return this.json;
+                  },
+                  ...(route.swagger || {}),
+                };
+          }
+      }
+      this.json.info.version = packageInfo.version;
+      this.json.paths = paths;
+      this.json.definitions = describeDefinitions(defs);
+      return this.json;
     }
 
     @Get("/swagger/{file}")

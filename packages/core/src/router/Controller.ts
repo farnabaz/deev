@@ -23,7 +23,7 @@ export default class Controller {
     constructor(context: any) {
         this.context = context;
 
-        const routes = Meta.getRoutes(this.constructor);
+        const routes = Meta.getRoutes(this);
         this.routes = Object.values(routes);
 
         const group = Meta.getGroup(this.constructor);

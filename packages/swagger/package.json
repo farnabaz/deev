@@ -16,7 +16,7 @@
     "chalk": "^2.4.2",
     "consola": "^2.5.7",
     "lodash": "^4.17.11",
-    "send": "^0.16.2",
+    "send": "^0.17.0",
     "strip-ansi": "^5.2.0",
     "swagger-ui-dist": "^3.22.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@deev/route-table",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.2-beta.0",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {

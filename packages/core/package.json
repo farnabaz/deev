@@ -1,6 +1,6 @@
 {
   "name": "@deev/core",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.2-beta.0",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -17,7 +17,7 @@
     "typescript": "3.4.1"
   },
   "dependencies": {
-    "@deev/route-table": "^0.0.1-beta.0",
+    "@deev/route-table": "^0.0.2-beta.0",
     "consola": "^2.5.7",
     "object-path": "^0.11.4",
     "reflect-metadata": "^0.1.13"

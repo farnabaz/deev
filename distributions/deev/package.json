@@ -1,6 +1,6 @@
 {
   "name": "deev",
-  "version": "0.0.2-beta.0",
+  "version": "0.0.2-beta.1",
   "main": "dist/index.js",
   "bin": "bin/deev.js",
   "license": "MIT",
@@ -13,8 +13,8 @@
     "dist"
   ],
   "dependencies": {
-    "@deev/cli": "^0.0.2-beta.0",
-    "@deev/core": "^0.0.2-beta.0",
+    "@deev/cli": "^0.0.2-beta.1",
+    "@deev/core": "^0.0.2-beta.1",
     "@deev/route-table": "^0.0.2-beta.0",
     "consola": "^2.5.7"
   },

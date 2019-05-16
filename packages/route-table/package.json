@@ -17,11 +17,11 @@
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/lodash": "^4.14.123",
-    "@types/node": "^11.11.6",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.3.4000"
+    "@types/chalk": "2.2.0",
+    "@types/lodash": "4.14.123",
+    "@types/node": "11.12.1",
+    "ts-node": "8.0.3",
+    "typescript": "3.4.1"
   },
   "publishConfig": {
     "access": "public"

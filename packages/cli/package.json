@@ -13,7 +13,8 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "^11.11.7"
+    "@types/node": "11.11.7",
+    "typescript": "3.4.1"
   },
   "dependencies": {
     "@deev/core": "^0.0.1-beta.0",

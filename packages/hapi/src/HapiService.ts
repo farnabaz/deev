@@ -2,7 +2,7 @@ import consola from "consola";
 import { Controller, Service } from "deev";
 import Hapi from "hapi";
 
-export default class TemplateService extends Service {
+export default class HapiService extends Service {
     public server: Hapi.Server;
 
     public async init() {
@@ -33,15 +33,15 @@ export default class TemplateService extends Service {
             for (const route of controller.routes) {
                 server.route({
                     method: route.method,
-                    path: route.prefix + route.path,
+                    path: route.path,
                     async handler(re, h: any) {
                         return await controller.__handleRequest(route, {
                             body: re.payload,
-                            params: re.params,
+                            path: re.params,
                             query: re.query,
                             render: h.view,
-                            request: re,
-                            response: h,
+                            request: re.raw.req,
+                            response: re.raw.res,
                         });
                     },
                 });

@@ -1,10 +1,11 @@
 import objectPath from "object-path";
-import { getRoutes } from "./store";
+import Meta from "./Meta";
 import Model from "./Model";
+import Route from "./Route";
 
 export interface IServerData {
     body: any;
-    params: { [key: string]: any};
+    path: { [key: string]: any};
     query: { [key: string]: any};
     request: any;
     response: any;
@@ -12,11 +13,21 @@ export interface IServerData {
 }
 
 export default class Controller {
-    public readonly routes: any[] = [];
+
+    public readonly routes: Route[] = [];
+
+    public readonly prefix: string;
+
     public context: any = null;
+
     constructor(context: any) {
         this.context = context;
-        this.routes = getRoutes(this.constructor.name);
+
+        const routes = Meta.getRoutes(this.constructor);
+        this.routes = Object.values(routes);
+
+        const group = Meta.getGroup(this.constructor);
+        this.prefix = group.prefix;
     }
 
     public async __handleRequest(route: any, data: IServerData) {

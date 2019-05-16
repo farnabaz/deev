@@ -2,7 +2,7 @@ import fs from "fs";
 
 import Config from "./Config";
 import { importModule } from "./imports";
-import { Controller } from "./routes";
+import { Controller } from "./router";
 import Service from "./Service";
 
 export default class Server {

@@ -1,4 +1,4 @@
-import { Controller, Route, Request, Response, Path, Get } from "deev";
+import { Controller, Get, Path, Request, Response, Route } from "deev";
 import send from "send";
 import { getAbsoluteFSPath } from "swagger-ui-dist";
 
@@ -26,8 +26,8 @@ function describeDefinitions(definitions: any[]) {
     }, {});
 
     defs[definition.name] = {
-      type: "object",
       properties,
+      type: "object",
       xml: {
         name: definition.name,
       },
@@ -52,9 +52,9 @@ function describeParameters(route: Route) {
     };
 
     return {
+      description: "Pet object that needs to be added to the store",
       in: $in,
       name: $path.length > 1 ? $path[1] : $path[0],
-      description: "Pet object that needs to be added to the store",
       required: true,
       ...schema,
     };
@@ -76,7 +76,7 @@ export default class SwaggerController extends Controller {
       const packageInfo: any = await this.context.import("~/package.json");
       for (const controller of controllers) {
           for (const route of controller.routes) {
-              const path = route.getPath();
+              const path = route.path;
               if (!paths[path]) {
                   paths[path] = {};
               }
@@ -84,25 +84,25 @@ export default class SwaggerController extends Controller {
                 defs.push(p.def);
               });
               paths[path][route.method.toLowerCase()] = {
-                  tags: [
-                    route.controller,
-                  ],
-                  consumes: [
-                    "application/json",
-                    "application/xml",
-                  ],
-                  produces: [
-                    "application/xml",
-                    "application/json",
-                  ],
-                  parameters: describeParameters(route),
-                  responses: {
-                    405: {
-                      description: "Invalid input",
-                    },
+                consumes: [
+                  "application/json",
+                  "application/xml",
+                ],
+                parameters: describeParameters(route),
+                produces: [
+                  "application/xml",
+                  "application/json",
+                ],
+                responses: {
+                  405: {
+                    description: "Invalid input",
                   },
-                  ...(route.swagger || {}),
-                };
+                },
+                tags: [
+                  route.controller,
+                ],
+                ...(route.swagger || {}),
+              };
           }
       }
       this.json.info.version = packageInfo.version;
@@ -115,36 +115,9 @@ export default class SwaggerController extends Controller {
     public async getUI(@Request() req: any, @Response() res: any, @Path("file") file: string) {
        return new Promise((resolve, reject) => {
             // create send stream
-            let stream = send(req, getAbsoluteFSPath() + "/" + file, {});
+            const stream = send(req, getAbsoluteFSPath() + "/" + file, {});
             stream.on("end", () => resolve());
             stream.on("error", () => reject());
-
-            // // add directory handler
-            // stream.on('directory', onDirectory)
-
-            // // add headers listener
-            // if (setHeaders) {
-            //     stream.on('headers', setHeaders)
-            // }
-
-            // add file listener for fallthrough
-            // if (fallthrough) {
-            // stream.on('file', function onFile () {
-            //     // once file is determined, always forward error
-            //     forwardError = true
-            // })
-            // }
-
-            // // forward errors
-            // stream.on('error', function error (err) {
-            //     if (forwardError || !(err.statusCode < 500)) {
-            //         next(err)
-            //         return
-            //     }
-
-            //     next()
-            // })
-
             // pipe
             stream.pipe(res);
             // return this.json;

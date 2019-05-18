@@ -1,4 +1,4 @@
-import { Router } from "deev"
+import { Router } from "deev";
 export * from "./HapiService";
 
 class SwaggerDoc {

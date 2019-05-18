@@ -43,7 +43,7 @@ export default class Server {
 
     public async loadModels() {
         const models = await fs.readdirSync(this.resolve("~/models"));
-        await Promise.all(models.map((c) => this.import("~/models" + c)));
+        await Promise.all(models.map((c) => this.import("~/models/" + c)));
     }
 
     public async loadPlugins() {
@@ -64,6 +64,8 @@ export default class Server {
     }
 
     public async init() {
+        await this.loadModels();
+
         await this.loadServices();
 
         await this.loadControllers();

@@ -31,7 +31,7 @@ export function Response(): ParameterDecorator {
  */
 export function Query(path?: string): ParameterDecorator {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const route = Meta.getRoute(target, func);;
+        const route = Meta.getRoute(target, func);
         const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
         route.params[index] = {
@@ -49,7 +49,7 @@ export function Query(path?: string): ParameterDecorator {
  */
 export function Path(path?: string) {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const route = Meta.getRoute(target, func);;
+        const route = Meta.getRoute(target, func);
         const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
         route.params[index] = {
@@ -67,7 +67,7 @@ export function Path(path?: string) {
  */
 export function Body() {
     return function prefixDecorator(target: any, func: string, index: number) {
-        const route = Meta.getRoute(target, func);;
+        const route = Meta.getRoute(target, func);
         const defs = Reflect.getMetadata("design:paramtypes", target, func);
 
         route.params[index] = {

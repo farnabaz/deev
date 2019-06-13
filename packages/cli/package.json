@@ -14,7 +14,7 @@
   ],
   "devDependencies": {
     "@types/node": "11.11.7",
-    "typescript": "3.4.1"
+    "typescript": "3.5.2"
   },
   "dependencies": {
     "@deev/core": "^0.0.2-beta.2",

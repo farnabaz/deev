@@ -13,7 +13,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "11.11.7",
+    "@types/node": "11.13.15",
     "typescript": "3.5.2"
   },
   "dependencies": {

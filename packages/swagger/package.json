@@ -17,7 +17,7 @@
     "consola": "^2.5.7",
     "lodash": "^4.17.11",
     "send": "^0.16.2",
-    "strip-ansi": "^5.2.0",
+    "strip-ansi": "^6.0.0",
     "swagger-ui-dist": "^3.22.0"
   },
   "devDependencies": {

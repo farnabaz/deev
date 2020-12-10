@@ -19,7 +19,7 @@
   "dependencies": {
     "@deev/core": "^0.0.2-beta.2",
     "consola": "^2.5.7",
-    "ts-node": "^8.0.3",
+    "ts-node": "^9.0.0",
     "typescript": "^3.3.4000"
   },
   "publishConfig": {

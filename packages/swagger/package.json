@@ -21,11 +21,11 @@
     "swagger-ui-dist": "^3.22.0"
   },
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/lodash": "^4.14.123",
-    "@types/node": "^11.11.6",
+    "@types/chalk": "2.2.0",
+    "@types/lodash": "4.14.168",
+    "@types/node": "11.15.44",
     "deev": "^0.0.2-beta.2",
-    "ts-node": "^8.0.3",
+    "ts-node": "8.0.3",
     "typescript": "3.5.2"
   },
   "publishConfig": {

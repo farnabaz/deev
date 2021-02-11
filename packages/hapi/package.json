@@ -19,7 +19,7 @@
     "@types/node": "11.13.15",
     "deev": "^0.0.2-beta.2",
     "ts-node": "8.0.3",
-    "typescript": "3.5.2"
+    "typescript": "3.9.9"
   },
   "publishConfig": {
     "access": "public"
